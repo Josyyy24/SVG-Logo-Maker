@@ -1,27 +1,29 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-
-// This is for the shapes
-const { Circle } = require('./shapes/Circle');
-const { Square } = require('./shapes/Square');
-const { Triangle } = require('./shapes/Triangle');
-
-// This is for the colors
 const colorNames = require('color-names');
 
+// shapes
+const { Circle } = require('./lib/shapes');
+const { Square } = require('./lib/shapes');
+const { Triangle } = require('./lib/shapes');
+
+// Colors
 const validateColor = (input) => {
-    if (!colorNames[input]) {
-        return 'Color not found';
+    let hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    if (input.match(hexRegex) || colorNames.includes(input.toLowerCase())){
+        return true;
+    } else {
+        return 'Invalid color';
     }
-    return true;
-}
+};
 
 const validateInitials = (input) => {    
     if (input.length !== 3) {
+        return true;
+    } else {
         return 'Initials must be 3 characters long';
     }
-    return true;
-}
+};
 
 // Questions
 
@@ -34,8 +36,14 @@ const questions = [
     },
     {
         type: 'input',
-        name: 'color',
-        message: 'Enter a color',
+        name: 'backgroundColor',
+        message: 'Enter a color for the background',
+        validate: validateColor
+    },
+    {
+        type: 'input',
+        name: 'textColor',
+        message: 'Enter a color for the text',
         validate: validateColor
     },
     {
@@ -47,6 +55,7 @@ const questions = [
 ];
 
 // function to generate answers
+function generateLogo(answers) {
 if (answers.logoshape == 'Circle') {
     const circle = new Circle(answers);
     const svgString = circle.render(answers);
@@ -70,6 +79,7 @@ function init() {
         generateLogo(answers);
         console.log('Generating logo...');
     })
+    }
 };
 
 init();
