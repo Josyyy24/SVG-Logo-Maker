@@ -56,30 +56,29 @@ const questions = [
 
 // function to generate answers
 function generateLogo(answers) {
-if (answers.logoshape == 'Circle') {
+    if (answers.logoshape == 'Circle') {
     const circle = new Circle(answers);
     const svgString = circle.render(answers);
     fs.writeFileSync('logo.svg', svgString, ()=> console.log('Generated logo.svg'));
-}
 
-if (answers.logoshape == 'Square') {
+
+    } else if (answers.logoshape == 'Square') {
     const square = new Square(answers);
     const svgString = square.render(answers);
     fs.writeFileSync('logo.svg', svgString, ()=> console.log('Generated logo.svg'));
-}
 
-if (answers.logoshape == 'Triangle') {
+    } else if (answers.logoshape == 'Triangle') {
     const triangle = new Triangle(answers);
     const svgString = triangle.render(answers);
     fs.writeFileSync('logo.svg', svgString, ()=> console.log('Generated logo.svg'));
-}
+    }
+};
 
 function init() {
     inquirer.prompt(questions).then(answers => {
         generateLogo(answers);
         console.log('Generating logo...');
     })
-    }
 };
 
 init();
